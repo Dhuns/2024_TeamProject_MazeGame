@@ -1,5 +1,7 @@
 package maze;
 
+import login.InformationForm;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -17,24 +19,32 @@ public class MazeGame extends JFrame {
     private int elapsedTime = 0; // 초 단위로 경과 시간 저장
     private JLabel timerLabel;
 
-    public MazeGame(int size) {
+    public MazeGame(int size, GamePanel.Difficulty difficulty) {
         maze = new Maze(size);
         player = new Player(0, 0);
         Random random = new Random();
 
-        // 랜덤한 flag 위치 생성
         do {
             flagX = random.nextInt(size);
             flagY = random.nextInt(size);
-        } while (maze.getMaze()[flagX][flagY] == 1 || (flagX == 0 && flagY == 0)); // 벽이나 시작 위치에 flag가 생성되지 않도록
+        } while (maze.getMaze()[flagX][flagY] == 1 || (flagX == 0 && flagY == 0));
 
         setTitle("미로 찾기 게임");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // 패널 설정
-        gamePanel = new GamePanel(maze, player, flagX, flagY);
+        gamePanel = new GamePanel(maze, player, flagX, flagY, difficulty);
         add(gamePanel);
+      
+        // 타이머 레이블 설정
+        timerLabel = new JLabel("경과 시간: 0초");
+        timerLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        timerLabel.setForeground(Color.DARK_GRAY);
+
+        // 타이머 패널 설정 (우측 상단)
+        JPanel timerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        timerPanel.add(timerLabel);
+        timerPanel.setBackground(Color.WHITE);  // 배경을 흰색으로 설정하여 깔끔하게 표시
 
         // 타이머 레이블 설정
         timerLabel = new JLabel("경과 시간: 0초");
@@ -47,7 +57,6 @@ public class MazeGame extends JFrame {
         timerPanel.setBackground(Color.WHITE);  // 배경을 흰색으로 설정하여 깔끔하게 표시
 
         add(timerPanel, BorderLayout.NORTH);
-
         loadImages(); // 이미지 로드
 
         pack();
@@ -86,7 +95,7 @@ public class MazeGame extends JFrame {
     }
 
     private void movePlayer(int keyCode) {
-        if (reachedDestination) return; // 도착하면 더 이상 이동 불가
+        if (reachedDestination) return;
 
         if (player.move(keyCode, maze)) {
             if (player.getX() == flagX && player.getY() == flagY) {
@@ -100,10 +109,41 @@ public class MazeGame extends JFrame {
     }
 
     public void startMazeGame() {
-        String input = JOptionPane.showInputDialog("미로의 사이즈를 입력하세요:");
-        int size = Integer.parseInt(input);
-        MazeGame game = new MazeGame(size);
-        game.setSize(600, 600); // 프레임 크기 설정
+        String[] options = {"하", "중", "상"};
+        int difficultyChoice = JOptionPane.showOptionDialog(
+                null,
+                "난이도를 선택하세요:",
+                "난이도 선택",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        GamePanel.Difficulty difficulty;
+        int size;
+        switch (difficultyChoice) {
+            case 0:
+                difficulty = GamePanel.Difficulty.EASY;
+                size = 20;
+                break;
+            case 1:
+                difficulty = GamePanel.Difficulty.MEDIUM;
+                size = 30;
+                break;
+            case 2:
+                difficulty = GamePanel.Difficulty.HARD;
+                size = 40;
+                break;
+            default:
+                difficulty = GamePanel.Difficulty.MEDIUM;
+                size = 30;
+                break;
+        }
+
+        MazeGame game = new MazeGame(size, difficulty);
+        game.setSize(600, 600);
         game.setVisible(true);
     }
 }
