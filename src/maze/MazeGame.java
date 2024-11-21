@@ -16,7 +16,6 @@ public class MazeGame extends JFrame {
     private int flagX;
     private int flagY;
     private Timer timer;
-    //private String userId = InformationForm.getUserId();
     private int elapsedTime = 0; // 초 단위로 경과 시간 저장
     private JLabel timerLabel;
 
@@ -47,8 +46,17 @@ public class MazeGame extends JFrame {
         timerPanel.add(timerLabel);
         timerPanel.setBackground(Color.WHITE);  // 배경을 흰색으로 설정하여 깔끔하게 표시
 
-        add(timerPanel, BorderLayout.NORTH);
+        // 타이머 레이블 설정
+        timerLabel = new JLabel("경과 시간: 0초");
+        timerLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        timerLabel.setForeground(Color.DARK_GRAY);
 
+        // 타이머 패널 설정 (우측 상단)
+        JPanel timerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        timerPanel.add(timerLabel);
+        timerPanel.setBackground(Color.WHITE);  // 배경을 흰색으로 설정하여 깔끔하게 표시
+
+        add(timerPanel, BorderLayout.NORTH);
         loadImages(); // 이미지 로드
 
         pack();
@@ -60,7 +68,6 @@ public class MazeGame extends JFrame {
                 movePlayer(e.getKeyCode());
             }
         });
-
 
         // 타이머 설정
         startTimer();
