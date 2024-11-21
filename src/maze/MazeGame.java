@@ -16,9 +16,9 @@ public class MazeGame extends JFrame {
     private int flagX;
     private int flagY;
     private Timer timer;
-    private int elapsedTime = 0;
-    private JLabel timerLabel;
     //private String userId = InformationForm.getUserId();
+    private int elapsedTime = 0; // 초 단위로 경과 시간 저장
+    private JLabel timerLabel;
 
     public MazeGame(int size, GamePanel.Difficulty difficulty) {
         maze = new Maze(size);
@@ -36,18 +36,20 @@ public class MazeGame extends JFrame {
 
         gamePanel = new GamePanel(maze, player, flagX, flagY, difficulty);
         add(gamePanel);
-
+      
+        // 타이머 레이블 설정
         timerLabel = new JLabel("경과 시간: 0초");
         timerLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
         timerLabel.setForeground(Color.DARK_GRAY);
 
+        // 타이머 패널 설정 (우측 상단)
         JPanel timerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         timerPanel.add(timerLabel);
-        timerPanel.setBackground(Color.WHITE);
+        timerPanel.setBackground(Color.WHITE);  // 배경을 흰색으로 설정하여 깔끔하게 표시
 
         add(timerPanel, BorderLayout.NORTH);
 
-        loadImages();
+        loadImages(); // 이미지 로드
 
         pack();
         setResizable(false);
@@ -59,6 +61,8 @@ public class MazeGame extends JFrame {
             }
         });
 
+
+        // 타이머 설정
         startTimer();
     }
 
@@ -89,11 +93,9 @@ public class MazeGame extends JFrame {
         if (player.move(keyCode, maze)) {
             if (player.getX() == flagX && player.getY() == flagY) {
                 reachedDestination = true;
-                stopTimer();
+                stopTimer(); // 타이머 정지
                 JOptionPane.showMessageDialog(this, "목적지에 도착했습니다! 클리어 시간: " + elapsedTime + "초");
-                dispose();
-                //new InformationForm(null, userId);
-                setVisible(true);
+                System.exit(0); // 프로그램 종료
             }
             gamePanel.updatePlayerPosition(player.getX(), player.getY());
         }
@@ -136,10 +138,5 @@ public class MazeGame extends JFrame {
         MazeGame game = new MazeGame(size, difficulty);
         game.setSize(600, 600);
         game.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        MazeGame mazeGame = new MazeGame(10, GamePanel.Difficulty.MEDIUM);
-        mazeGame.startMazeGame();
     }
 }
