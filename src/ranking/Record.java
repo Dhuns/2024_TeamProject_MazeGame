@@ -3,12 +3,12 @@ package ranking;
 
 public class Record {
     private String difficulty;
-    private String playerId;
+    private String nickname;
     private int time;
 
-    public Record(String difficulty, String playerId, int time) {
+    public Record(String difficulty, String nickname, int time) {
         this.difficulty = difficulty;
-        this.playerId = playerId;
+        this.nickname = nickname;
         this.time = time;
     }
 
@@ -16,8 +16,8 @@ public class Record {
         return difficulty;
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public String getNickname() {
+        return nickname;
     }
 
     public int getTime() {
@@ -26,6 +26,6 @@ public class Record {
 
     @Override
     public String toString() {
-        return "id: " + playerId + ", " + time + "초";
+        return nickname + ", " + time + "초";
     }
 }

@@ -1,3 +1,4 @@
+// LoginForm.java
 package login;
 
 import javax.swing.*;
@@ -19,9 +20,10 @@ public class LoginForm extends JFrame {
     private JButton logBtn;
     private JButton joinBtn;
     private LayoutManager flowLeft;
+    private InformationForm informationForm; // InformationForm 인스턴스 필드 추가
 
     public LoginForm() {
-        users = new UsersData();
+        users = UsersData.getInstance();
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
@@ -60,6 +62,14 @@ public class LoginForm extends JFrame {
         return idTxt.getText();
     }
 
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
     public void setDisplay() {
         JPanel loginPanel = new JPanel(new BorderLayout());
 
@@ -87,7 +97,7 @@ public class LoginForm extends JFrame {
 
         mainPanel.add(loginPanel, "loginForm");
 
-        InformationForm informationForm = new InformationForm(this);
+        informationForm = new InformationForm(this); // InformationForm 인스턴스 생성
         mainPanel.add(informationForm, "informationForm");
 
         add(mainPanel);
@@ -115,8 +125,8 @@ public class LoginForm extends JFrame {
                     } else if (!users.getUser(idTxt.getText()).getPw().equals(String.valueOf(pwTxt.getPassword()))) {
                         JOptionPane.showConfirmDialog(LoginForm.this, "암호가 일치하지 않습니다", "RETRY", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        InformationForm informationForm = new InformationForm(LoginForm.this);
-                        informationForm.setcheck(users.getUser(idTxt.getText()).toString());
+                        users.setCurrentUser(users.getUser(idTxt.getText())); // 현재 사용자 설정
+                        informationForm.setcheck(users.getCurrentUserId()); // 정보 업데이트
                         cardLayout.show(mainPanel, "informationForm");
                         idTxt.setText("");
                         pwTxt.setText("");

@@ -10,10 +10,28 @@ import java.util.ArrayList;
 public class UsersData {
     private ArrayList<User> users;
     private static final String FILE_PATH = "user.txt";
+    private User currentUser; // 인스턴스 필드로 변경
 
-    public UsersData() {
+    private static UsersData instance;
+
+    private UsersData() {
         users = new ArrayList<>();
         loadUserData();
+    }
+
+    public static UsersData getInstance() {
+        if (instance == null) {
+            instance = new UsersData();
+        }
+        return instance;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 
     public void addUser(User newUser) {
@@ -23,6 +41,14 @@ public class UsersData {
 
     public boolean isIdOverlap(String userId) {
         return users.stream().anyMatch(user -> user.getId().equals(userId));
+    }
+
+    public String getCurrentUserId() {
+        if (currentUser != null) {
+            return currentUser.getId();
+        } else {
+            throw new IllegalStateException("No user is currently logged in.");
+        }
     }
 
     public void withdraw(String userId) {
@@ -94,12 +120,11 @@ public class UsersData {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
-                if (userData.length == 4) {
+                if (userData.length == 3) {
                     String id = userData[0];
                     String pw = userData[1];
                     String name = userData[2];
-                    String nickName = userData[3];
-                    User user = new User(id, pw, name, nickName);
+                    User user = new User(id, pw, name);
                     users.add(user);
                 } else {
                     System.out.println("잘못된 형식의 데이터 " + line);
@@ -118,7 +143,6 @@ public class UsersData {
                 writer.write(user.getId() + ",");
                 writer.write(user.getPw() + ",");
                 writer.write(user.getName() + ",");
-                writer.write(user.getnickName() + "\n");
             }
             writer.flush();
         } catch (IOException e) {

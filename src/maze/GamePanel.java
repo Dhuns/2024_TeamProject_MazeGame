@@ -29,6 +29,10 @@ public class GamePanel extends JPanel {
         this.visited = new boolean[maze.getSize()][maze.getSize()];
     }
 
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
     public void setBlockImage(BufferedImage blockImage) {
         this.blockImage = blockImage;
     }

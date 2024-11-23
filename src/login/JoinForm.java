@@ -89,9 +89,6 @@ public class JoinForm extends JDialog {
         nameLabel = new JLabel("이름", JLabel.LEFT);
         nameLabel.setPreferredSize(labelSize);
 
-        nickNameLabel = new JLabel("닉네임", JLabel.LEFT);
-        nickNameLabel.setPreferredSize(labelSize);
-
         idTxt = new JTextField(txtSize);
         pwTxt = new JPasswordField(txtSize);
         reTxt = new JPasswordField(txtSize);
@@ -130,16 +127,10 @@ public class JoinForm extends JDialog {
         namePanel.add(nameLabel);
         namePanel.add(nameTextField);
 
-        JPanel nickNamePanel = new JPanel(flowLeft);
-        nickNamePanel.add(nickNameLabel);
-        nickNamePanel.add(nickNameTextField);
-
         mainCPanel.add(idPanel);
         mainCPanel.add(pwPanel);
         mainCPanel.add(rePanel);
         mainCPanel.add(namePanel);
-        mainCPanel.add(nickNamePanel);
-
 
         JPanel southPanel = new JPanel();
         southPanel.add(joinBtn);
@@ -189,8 +180,7 @@ public class JoinForm extends JDialog {
                     } else {
                         users.addUser(new User(idTxt.getText(),
                                 String.valueOf(((JPasswordField) pwTxt) .getPassword()),
-                                nameTextField.getText(),
-                                nickNameTextField.getText()));
+                                nameTextField.getText()));
                         JOptionPane.showMessageDialog(JoinForm.this, "회원가입을 완료했습니다","WELCOME",JOptionPane.PLAIN_MESSAGE);
                         dispose();
                         loginForm.setVisible(true);
@@ -217,10 +207,6 @@ public class JoinForm extends JDialog {
         }
         if(nameTextField.getText().isEmpty()) {
             nameTextField.requestFocus();
-            return true;
-        }
-        if(nickNameTextField.getText().isEmpty()) {
-            nickNameTextField.requestFocus();
             return true;
         }
         return result;

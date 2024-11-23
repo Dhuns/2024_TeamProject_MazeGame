@@ -1,7 +1,8 @@
 package maze;
 
-import login.InformationForm;
-
+import login.LoginForm;
+import login.UsersData;
+import ranking.RecordManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -18,11 +19,15 @@ public class MazeGame extends JFrame {
     private Timer timer;
     private int elapsedTime = 0; // 초 단위로 경과 시간 저장
     private JLabel timerLabel;
+    private RecordManager recordManager;
+    private LoginForm loginForm;
 
     public MazeGame(int size, GamePanel.Difficulty difficulty) {
+        this.loginForm = loginForm;
         maze = new Maze(size);
         player = new Player(0, 0);
         Random random = new Random();
+        recordManager = new RecordManager();
 
         do {
             flagX = random.nextInt(size);
@@ -35,16 +40,6 @@ public class MazeGame extends JFrame {
 
         gamePanel = new GamePanel(maze, player, flagX, flagY, difficulty);
         add(gamePanel);
-      
-        // 타이머 레이블 설정
-        timerLabel = new JLabel("경과 시간: 0초");
-        timerLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        timerLabel.setForeground(Color.DARK_GRAY);
-
-        // 타이머 패널 설정 (우측 상단)
-        JPanel timerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        timerPanel.add(timerLabel);
-        timerPanel.setBackground(Color.WHITE);  // 배경을 흰색으로 설정하여 깔끔하게 표시
 
         // 타이머 레이블 설정
         timerLabel = new JLabel("경과 시간: 0초");
@@ -102,14 +97,21 @@ public class MazeGame extends JFrame {
                 reachedDestination = true;
                 stopTimer(); // 타이머 정지
                 JOptionPane.showMessageDialog(this, "목적지에 도착했습니다! 클리어 시간: " + elapsedTime + "초");
-                System.exit(0); // 프로그램 종료
+                saveRanking(); // 랭킹 저장
+                dispose();
             }
             gamePanel.updatePlayerPosition(player.getX(), player.getY());
         }
     }
 
+    private void saveRanking() {
+        String userId = UsersData.getInstance().getCurrentUserId();
+        String difficulty = gamePanel.getDifficulty().toString();
+        recordManager.saveRecord(difficulty, userId, elapsedTime);
+    }
+
     public void startMazeGame() {
-        String[] options = {"하", "중", "상"};
+        String[] options = {"Easy", "Medium", "Hard"};
         int difficultyChoice = JOptionPane.showOptionDialog(
                 null,
                 "난이도를 선택하세요:",
@@ -126,15 +128,15 @@ public class MazeGame extends JFrame {
         switch (difficultyChoice) {
             case 0:
                 difficulty = GamePanel.Difficulty.EASY;
-                size = 20;
+                size = 5;
                 break;
             case 1:
                 difficulty = GamePanel.Difficulty.MEDIUM;
-                size = 30;
+                size = 5;
                 break;
             case 2:
                 difficulty = GamePanel.Difficulty.HARD;
-                size = 40;
+                size = 5;
                 break;
             default:
                 difficulty = GamePanel.Difficulty.MEDIUM;

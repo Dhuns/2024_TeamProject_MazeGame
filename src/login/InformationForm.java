@@ -1,3 +1,4 @@
+// InformationForm.java
 package login;
 
 import javax.swing.*;
@@ -6,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import maze.GamePanel;
 import maze.MazeGame;
+import ranking.RankingForm;
 
 public class InformationForm extends JPanel {
     private LoginForm parentFrame;
@@ -17,6 +19,13 @@ public class InformationForm extends JPanel {
 
         userInfoLabel = new JLabel();
         add(userInfoLabel, BorderLayout.NORTH);
+
+        try {
+            String userId = UsersData.getInstance().getCurrentUserId();
+            userInfoLabel.setText("Logged in as: " + userId);
+        } catch (IllegalStateException e) {
+            userInfoLabel.setText("No user is currently logged in.");
+        }
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
@@ -42,7 +51,7 @@ public class InformationForm extends JPanel {
                 switch (difficultyChoice) {
                     case 0:
                         difficulty = GamePanel.Difficulty.EASY;
-                        size = 20;
+                        size = 5;
                         break;
                     case 1:
                         difficulty = GamePanel.Difficulty.MEDIUM;
@@ -59,7 +68,6 @@ public class InformationForm extends JPanel {
                 MazeGame mazeGame = new MazeGame(size, difficulty);
                 mazeGame.setSize(600, 600);
                 mazeGame.setVisible(true);
-                parentFrame.dispose();
             }
         });
         buttonPanel.add(startGameBtn);
@@ -77,7 +85,8 @@ public class InformationForm extends JPanel {
         checkRankingBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(parentFrame, "Ranking feature is not implemented yet.", "Ranking", JOptionPane.INFORMATION_MESSAGE);
+                RankingForm rankingForm = new RankingForm();
+                rankingForm.setVisible(true);
             }
         });
         buttonPanel.add(checkRankingBtn);

@@ -14,13 +14,11 @@ public class User implements Serializable {
     private String id;
     private String pw;
     private String name;
-    private String nickName;
 
-    public User(String id, String pw, String name, String nickName) {
+    public User(String id, String pw, String name) {
         setId(id);
         setPw(pw);
         setName(name);
-        setNickName(nickName);
     }
 
     public User(String id) {
@@ -46,13 +44,6 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getnickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -71,7 +62,6 @@ public class User implements Serializable {
         String info = "아이디: " + id + "\n";
         info += "암호: " + pw + "\n";
         info += "이름: " + name + "\n";
-        info += "닉네임: " + nickName + "\n";
         return info;
     }
 }

@@ -1,3 +1,5 @@
-test,1234,name,nickname
-aaa,1234,names,nickname
-oesnuep,1234,ee,감자
+test,1234,name,
+aaa,1234,names,
+oesnuep,1234,ee,
+1,1,1,
+12,1,1,
