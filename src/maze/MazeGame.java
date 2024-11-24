@@ -83,10 +83,10 @@ public class MazeGame extends JFrame {
     }
 
     private void loadImages() {
-        gamePanel.setBlockImage(ImageLoader.loadImage("images/block.png"));
+        gamePanel.setBlockImage(ImageLoader.loadImage("images/block.jpg"));
         gamePanel.setPathImage(ImageLoader.loadImage("images/path.png"));
         gamePanel.setPlayerImage(ImageLoader.loadImage("images/player.png"));
-        gamePanel.setFlagImage(ImageLoader.loadImage("images/flag.png"));
+        gamePanel.setFlagImage(ImageLoader.loadImage("images/treasure.jpg"));
     }
 
     private void movePlayer(int keyCode) {
