@@ -9,24 +9,19 @@ import javax.swing.border.EmptyBorder;
 import java.util.List;
 
 public class RankingForm extends JFrame {
-    private final RecordManager recordManager; // final 추가
-    private final JPanel cardPanel;           // final 추가
-    private final CardLayout cardLayout;      // final 추가
+    private final RecordManager recordManager;
+    private final JPanel cardPanel;
+    private final CardLayout cardLayout;
 
     public RankingForm() {
-        this(null);
-    }
-
-    public RankingForm(JFrame informationForm) {
-        recordManager = new RecordManager(); // 초기화
-        cardLayout = new CardLayout();       // 초기화
-        cardPanel = new JPanel(cardLayout);  // 초기화
+        recordManager = new RecordManager();
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
 
         setTitle("랭킹 확인");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // 상단 Home 및 Logout 버튼 생성
         JButton homeButton = new JButton("Home");
         JButton logoutButton = new JButton("Logout");
 
@@ -35,32 +30,26 @@ public class RankingForm extends JFrame {
         topPanel.add(logoutButton, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
-        // Home 버튼 동작
-        homeButton.addActionListener(e -> dispose());
+        homeButton.addActionListener(event -> dispose());
 
-        // Logout 버튼 동작
-        logoutButton.addActionListener(e -> {
-            UsersData.getInstance().setCurrentUser(null); // 사용자 초기화
-            // 현재 열려 있는 모든 창 닫기
+        logoutButton.addActionListener(event -> {
+            UsersData.getInstance().setCurrentUser(null);
             for (Window window : Window.getWindows()) {
                 window.dispose();
             }
-            // 새로운 로그인 화면 띄우기
             SwingUtilities.invokeLater(() -> new LoginForm().setVisible(true));
         });
 
-        // 난이도별 CardLayout 구성
         cardPanel.add(createRankingPanel("HARD"), "상");
         cardPanel.add(createRankingPanel("MEDIUM"), "중");
         cardPanel.add(createRankingPanel("EASY"), "하");
         add(cardPanel, BorderLayout.CENTER);
 
-        // 좌우 화살표 버튼 생성
         JButton leftArrow = new JButton("←");
         JButton rightArrow = new JButton("→");
 
-        leftArrow.addActionListener(e -> cardLayout.previous(cardPanel));
-        rightArrow.addActionListener(e -> cardLayout.next(cardPanel));
+        leftArrow.addActionListener(event -> cardLayout.previous(cardPanel));
+        rightArrow.addActionListener(event -> cardLayout.next(cardPanel));
 
         JPanel leftPanel = new JPanel(new GridBagLayout());
         leftPanel.add(leftArrow);
@@ -75,14 +64,12 @@ public class RankingForm extends JFrame {
         setVisible(true);
     }
 
-    // 난이도별 랭킹 패널 생성 메서드
     private JPanel createRankingPanel(String difficulty) {
         List<Record> records = recordManager.getRecordsByDifficulty(difficulty);
         JPanel panel = new JPanel(new BorderLayout());
         JLabel titleLabel = new JLabel(difficulty + " 난이도 랭킹", SwingConstants.CENTER);
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // 랭킹 데이터 표시
         JTextArea rankingTextArea = new JTextArea();
         rankingTextArea.setEditable(false);
         for (Record record : records) {
