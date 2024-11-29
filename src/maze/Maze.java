@@ -66,4 +66,13 @@ public class Maze {
     public int getSize() {
         return size;
     }
+
+    public boolean isValidMove(int x, int y) {
+        // 범위 체크
+        if (x < 0 || x >= size || y < 0 || y >= size) {
+            return false;
+        }
+        // 벽인지 체크
+        return maze[x][y] == 0; // 0이면 길, 1이면 벽
+    }
 }

@@ -16,6 +16,10 @@ public class GamePanel extends JPanel {
     private BufferedImage pathImage;
     private BufferedImage playerImage;
     private BufferedImage flagImage;
+    private BufferedImage playerUPImage;
+    private BufferedImage playerDOWNImage;
+    private BufferedImage playerLEFTImage;
+    private BufferedImage playerRIGHTImage;
     private int flagX;
     private int flagY;
     private Difficulty difficulty;
@@ -49,9 +53,42 @@ public class GamePanel extends JPanel {
         this.flagImage = flagImage;
     }
 
-    public void updatePlayerPosition(int x, int y) {
+    public void setPlayerUPImage(BufferedImage playerUPImage) {
+        this.playerUPImage = playerUPImage;
+    }
+
+    public void setPlayerDOWNImage(BufferedImage playerDOWNImage) {
+        this.playerDOWNImage = playerDOWNImage;
+    }
+
+    public void setPlayerLEFTImage(BufferedImage playerLEFTImage) {
+        this.playerLEFTImage = playerLEFTImage;
+    }
+
+    public void setPlayerRIGHTImage(BufferedImage playerRIGHTImage) {
+        this.playerRIGHTImage = playerRIGHTImage;
+    }
+
+    public void updatePlayerPosition(int x, int y, String direction) {
         player.setPosition(x, y);
         visited[player.getX()][player.getY()] = true;
+
+        // 방향에 따라 플레이어 이미지를 설정
+        switch (direction) {
+            case "UP":
+                playerImage = playerUPImage;
+                break;
+            case "DOWN":
+                playerImage = playerDOWNImage;
+                break;
+            case "LEFT":
+                playerImage = playerLEFTImage;
+                break;
+            case "RIGHT":
+                playerImage = playerRIGHTImage;
+                break;
+        }
+
         repaint();
     }
 

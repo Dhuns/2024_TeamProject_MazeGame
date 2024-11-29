@@ -84,15 +84,30 @@ public class MazeGame extends JFrame {
 
     private void loadImages() {
         gamePanel.setBlockImage(ImageLoader.loadImage("images/block.jpg"));
-        gamePanel.setPathImage(ImageLoader.loadImage("images/path.png"));
-        gamePanel.setPlayerImage(ImageLoader.loadImage("images/player.png"));
-        gamePanel.setFlagImage(ImageLoader.loadImage("images/treasure.jpg"));
+        gamePanel.setPathImage(ImageLoader.loadImage("images/path.jpg"));
+        gamePanel.setPlayerImage(ImageLoader.loadImage("images/playerDOWN.png"));
+        gamePanel.setFlagImage(ImageLoader.loadImage("images/flag.png"));
+        gamePanel.setPlayerUPImage(ImageLoader.loadImage("images/playerUP.png"));
+        gamePanel.setPlayerDOWNImage(ImageLoader.loadImage("images/playerDOWN.png"));
+        gamePanel.setPlayerLEFTImage(ImageLoader.loadImage("images/playerLEFT.png"));
+        gamePanel.setPlayerRIGHTImage(ImageLoader.loadImage("images/playerRIGHT.png"));
     }
 
     private void movePlayer(int keyCode) {
         if (reachedDestination) return;
 
+        String direction = "";
         if (player.move(keyCode, maze)) {
+            if (keyCode == KeyEvent.VK_UP) {
+                direction = "UP";
+            } else if (keyCode == KeyEvent.VK_DOWN) {
+                direction = "DOWN";
+            } else if (keyCode == KeyEvent.VK_LEFT) {
+                direction = "LEFT";
+            } else if (keyCode == KeyEvent.VK_RIGHT) {
+                direction = "RIGHT";
+            }
+
             if (player.getX() == flagX && player.getY() == flagY) {
                 reachedDestination = true;
                 stopTimer(); // 타이머 정지
@@ -100,7 +115,8 @@ public class MazeGame extends JFrame {
                 saveRanking(); // 랭킹 저장
                 dispose();
             }
-            gamePanel.updatePlayerPosition(player.getX(), player.getY());
+
+            gamePanel.updatePlayerPosition(player.getX(), player.getY(), direction);
         }
     }
 
@@ -132,15 +148,15 @@ public class MazeGame extends JFrame {
                 break;
             case 1:
                 difficulty = GamePanel.Difficulty.MEDIUM;
-                size = 5;
+                size = 10; // MEDIUM 난이도에 맞게 크기 조정
                 break;
             case 2:
                 difficulty = GamePanel.Difficulty.HARD;
-                size = 5;
+                size = 15; // HARD 난이도에 맞게 크기 조정
                 break;
             default:
                 difficulty = GamePanel.Difficulty.MEDIUM;
-                size = 30;
+                size = 10; // 기본 크기
                 break;
         }
 
