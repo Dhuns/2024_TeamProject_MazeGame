@@ -95,9 +95,9 @@ public class JoinForm extends JDialog {
         nameTextField = new JTextField(txtSize);
         nickNameTextField = new JTextField(txtSize);
 
-        joinBtn = new JButton("JOIN");
+        joinBtn = new JButton("가입하기");
         joinBtn.setPreferredSize(btnSize);
-        cancelBtn = new JButton("CANCEL");
+        cancelBtn = new JButton("취소");
         cancelBtn.setPreferredSize(btnSize);
 
         // 레이아웃의 열과 행을 설정, 0은 열의 값을 제한하지 않는다

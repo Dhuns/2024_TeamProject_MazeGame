@@ -22,6 +22,7 @@ public class MazeGame extends JFrame {
     private RecordManager recordManager;
     private LoginForm loginForm;
 
+
     public MazeGame(int size, GamePanel.Difficulty difficulty) {
         this.loginForm = loginForm;
         maze = new Maze(size);
@@ -126,42 +127,5 @@ public class MazeGame extends JFrame {
         recordManager.saveRecord(difficulty, userId, elapsedTime);
     }
 
-    public void startMazeGame() {
-        String[] options = {"Easy", "Medium", "Hard"};
-        int difficultyChoice = JOptionPane.showOptionDialog(
-                null,
-                "난이도를 선택하세요:",
-                "난이도 선택",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                options,
-                options[0]
-        );
 
-        GamePanel.Difficulty difficulty;
-        int size;
-        switch (difficultyChoice) {
-            case 0:
-                difficulty = GamePanel.Difficulty.EASY;
-                size = 5;
-                break;
-            case 1:
-                difficulty = GamePanel.Difficulty.MEDIUM;
-                size = 10; // MEDIUM 난이도에 맞게 크기 조정
-                break;
-            case 2:
-                difficulty = GamePanel.Difficulty.HARD;
-                size = 15; // HARD 난이도에 맞게 크기 조정
-                break;
-            default:
-                difficulty = GamePanel.Difficulty.MEDIUM;
-                size = 10; // 기본 크기
-                break;
-        }
-
-        MazeGame game = new MazeGame(size, difficulty);
-        game.setSize(600, 600);
-        game.setVisible(true);
-    }
 }
